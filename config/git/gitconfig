@@ -1,0 +1,142 @@
+# Git Configuration Template
+# To use: Copy desired sections to your ~/.gitconfig or use git config --global commands
+
+[user]
+    # Set your user information
+    name = Your Name
+    email = your.email@example.com
+
+[core]
+    # Use VSCode as default editor
+    editor = code --wait
+
+    # Handle line endings automatically
+    autocrlf = input
+
+    # Use UTF-8 encoding
+    quotePath = false
+
+    # Enable symlinks
+    symlinks = true
+
+    # Large file support
+    longpaths = true
+
+[init]
+    # Set default branch name
+    defaultBranch = main
+
+[color]
+    # Enable colored output
+    ui = auto
+
+[pull]
+    # Default pull strategy
+    rebase = true
+
+[push]
+    # Push only current branch
+    default = current
+
+    # Automatically set upstream
+    autoSetupRemote = true
+
+[fetch]
+    # Automatically prune deleted branches
+    prune = true
+
+[diff]
+    # Use VSCode as diff tool
+    tool = vscode
+
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+
+[merge]
+    # Use VSCode as merge tool
+    tool = vscode
+
+    # Show common ancestor in conflicts
+    conflictstyle = diff3
+
+[mergetool "vscode"]
+    cmd = code --wait $MERGED
+
+[alias]
+    # Status shortcuts
+    st = status
+    s = status -s
+
+    # Branch operations
+    br = branch
+    ba = branch -a
+    bd = branch -d
+
+    # Checkout operations
+    co = checkout
+    cb = checkout -b
+
+    # Commit operations
+    ci = commit
+    cm = commit -m
+    ca = commit --amend
+
+    # Diff operations
+    d = diff
+    ds = diff --staged
+
+    # Log operations
+    l = log --oneline
+    lg = log --oneline --graph
+    last = log -1 HEAD
+
+    # Remote operations
+    f = fetch
+    p = push
+    pl = pull
+
+    # Stash operations
+    sta = stash
+    stp = stash pop
+    stl = stash list
+
+    # Reset operations
+    unstage = reset HEAD --
+    undo = reset --soft HEAD^
+
+    # Show operations
+    tags = tag -l
+    branches = branch -a
+    remotes = remote -v
+
+    # Utility
+    alias = config --get-regexp ^alias\\.
+    amend = commit --amend --no-edit
+    contributors = shortlog --summary --numbered
+    filehistory = log -p --follow
+
+    # Complex operations
+    cleanup = "!git branch --merged | grep -v '\\*\\|master\\|main\\|develop' | xargs -n 1 git branch -d"
+    sync = "!git fetch origin && git pull --rebase origin $(git rev-parse --abbrev-ref HEAD)"
+    undo-commit = "reset --soft HEAD^"
+    unstage-all = "reset HEAD"
+
+[credential]
+    # Cache credentials
+    helper = cache --timeout=3600
+
+[help]
+    # Automatically correct mistyped commands
+    autocorrect = 1
+
+[rerere]
+    # Remember resolved conflicts
+    enabled = true
+
+[commit]
+    # Use template for commit messages
+    template = ~/.gitmessage
+
+# Include local config if exists
+[include]
+    path = ~/.gitconfig.local

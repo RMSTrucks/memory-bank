@@ -1,0 +1,35 @@
+# Title: Summary, imperative, start upper case, don't end with a period
+# No more than 50 chars. #### 50 chars is here:  #
+
+# Remember blank line between title and body.
+
+# Body: Explain *what* and *why* (not *how*). Include task ID (Jira issue).
+# Wrap at 72 chars. ################################## which is here:  #
+
+# At the end: Include Co-authored-by for collaborators.
+# Co-authored-by: name <name@example.com>
+
+# --- COMMIT END ---
+# Type can be
+#    feat     (new feature)
+#    fix      (bug fix)
+#    refactor (refactoring production code)
+#    style    (formatting, missing semi colons, etc; no code change)
+#    docs     (changes to documentation)
+#    test     (adding or refactoring tests; no production code change)
+#    chore    (updating grunt tasks etc; no production code change)
+# --------------------
+# Remember to:
+#   * Use the imperative mood in the subject line
+#   * Do not end the subject line with a period
+#   * Use the body to explain what and why vs. how
+#   * Can use multiple lines with "-" for bullet points in body
+# --------------------
+# Example:
+# feat: Add client authentication to API endpoints
+#
+# - Implement JWT token validation middleware
+# - Add user authentication routes
+# - Create token refresh mechanism
+#
+# Closes #123

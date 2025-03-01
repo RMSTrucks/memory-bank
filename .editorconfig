@@ -1,0 +1,85 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Default settings for all files
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# Markdown files
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = 80
+
+# Python files
+[*.py]
+indent_size = 4
+max_line_length = 88  # Black formatter default
+
+# JavaScript/TypeScript files
+[*.{js,jsx,ts,tsx}]
+indent_size = 2
+max_line_length = 100
+quote_type = single
+
+# JSON files
+[*.json]
+indent_size = 2
+
+# YAML files
+[*.{yml,yaml}]
+indent_size = 2
+
+# Shell scripts
+[*.{sh,bash,zsh}]
+indent_size = 2
+end_of_line = lf
+
+# PowerShell scripts
+[*.{ps1,psd1,psm1}]
+indent_size = 4
+end_of_line = crlf
+
+# Batch files
+[*.{cmd,bat}]
+end_of_line = crlf
+
+# Config files
+[*.{ini,conf}]
+indent_size = 4
+
+# Documentation
+[*.{txt,md,markdown}]
+max_line_length = 80
+
+# Web files
+[*.{htm,html,css,sass,scss}]
+indent_size = 2
+
+# XML files
+[*.{xml,svg}]
+indent_size = 2
+
+# Makefiles
+[Makefile]
+indent_style = tab
+
+# Go files
+[*.go]
+indent_style = tab
+indent_size = 4
+
+# Rust files
+[*.rs]
+indent_size = 4
+max_line_length = 100
+
+# SQL files
+[*.sql]
+indent_size = 2

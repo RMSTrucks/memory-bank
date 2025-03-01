@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Graph Visualization Demo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f7fafc;
+        }
+
+        #container {
+            width: 900px;
+            height: 600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        #controls {
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4299e1;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #3182ce;
+        }
+
+        button.active {
+            background-color: #2c5282;
+        }
+
+        #theme-toggle {
+            margin-left: auto;
+        }
+
+        #visualization {
+            width: 100%;
+            height: calc(100% - 70px);
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="controls">
+            <button id="add-node">Add Node</button>
+            <button id="add-relationship">Add Relationship</button>
+            <button id="drag-toggle">Enable Drag</button>
+            <button id="theme-toggle">Toggle Theme</button>
+        </div>
+        <div id="visualization">
+            <svg></svg>
+        </div>
+    </div>
+
+    <script type="module">
+        import { VisualizationService } from '../services/visualization.service.js';
+        import { SVGRenderer } from '../services/renderers/svg-renderer.js';
+        import { ForceLayout } from '../services/layouts/force-layout.js';
+        import { D3InteractionHandler } from '../services/handlers/interaction-handler.js';
+
+        // Initialize visualization
+        const container = document.getElementById('visualization');
+        const options = {
+            layout: 'force',
+            renderer: 'svg',
+            theme: 'light',
+            dimensions: {
+                width: 900,
+                height: 530
+            }
+        };
+
+        const service = new VisualizationService(
+            new SVGRenderer(),
+            new ForceLayout(),
+            new D3InteractionHandler(),
+            options
+        );
+
+        service.initialize(container);
+
+        // Sample data
+        let nodeId = 1;
+        const nodes = [];
+        const relationships = [];
+
+        // Event handlers
+        document.getElementById('add-node').addEventListener('click', () => {
+            const node = {
+                id: String(nodeId++),
+                type: ['concept', 'task', 'learning', 'pattern', 'improvement'][Math.floor(Math.random() * 5)],
+                content: {
+                    title: `Node ${nodeId - 1}`,
+                    description: `Test node ${nodeId - 1}`,
+                    data: {}
+                },
+                metadata: {
+                    created: new Date(),
+                    updated: new Date(),
+                    version: 1,
+                    confidence: Math.random(),
+                    source: 'demo',
+                    tags: ['demo']
+                },
+                relationships: []
+            };
+
+            nodes.push(node);
+            service.onNodeAdded(node);
+        });
+
+        document.getElementById('add-relationship').addEventListener('click', () => {
+            if (nodes.length < 2) return;
+
+            const sourceIndex = Math.floor(Math.random() * nodes.length);
+            let targetIndex;
+            do {
+                targetIndex = Math.floor(Math.random() * nodes.length);
+            } while (targetIndex === sourceIndex);
+
+            const relationship = {
+                sourceId: nodes[sourceIndex].id,
+                targetId: nodes[targetIndex].id,
+                type: ['related', 'depends_on', 'improves', 'implements', 'derives_from'][Math.floor(Math.random() * 5)],
+                strength: Math.random(),
+                metadata: {},
+                created: new Date(),
+                updated: new Date()
+            };
+
+            relationships.push(relationship);
+            service.onRelationshipAdded(relationship);
+        });
+
+        let dragEnabled = false;
+        document.getElementById('drag-toggle').addEventListener('click', (event) => {
+            dragEnabled = !dragEnabled;
+            if (dragEnabled) {
+                service.enableDrag();
+                event.target.classList.add('active');
+                event.target.textContent = 'Disable Drag';
+            } else {
+                service.disableDrag();
+                event.target.classList.remove('active');
+                event.target.textContent = 'Enable Drag';
+            }
+        });
+
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            options.theme = options.theme === 'light' ? 'dark' : 'light';
+            document.body.style.backgroundColor = options.theme === 'light' ? '#f7fafc' : '#1a202c';
+            service.initialize(container);
+            service.render(nodes, relationships);
+        });
+    </script>
+</body>
+</html>
